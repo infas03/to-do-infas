@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   Delete,
+  Version,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -17,21 +18,25 @@ export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
+  @Version('1')
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
   }
 
   @Get()
+  @Version('1')
   async findAll() {
     return this.employeesService.findAll();
   }
 
   @Get(':id')
+  @Version('1')
   async findOne(@Param('id') id: number) {
     return this.employeesService.findOne(id);
   }
 
   @Put(':id')
+  @Version('1')
   async update(
     @Param('id') id: number,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
@@ -40,6 +45,7 @@ export class EmployeesController {
   }
 
   @Delete(':id')
+  @Version('1')
   async delete(@Param('id') id: number) {
     return this.employeesService.delete(id);
   }

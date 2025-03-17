@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { User } from 'src/auth/entities/user.entity';
 import { Employee } from 'src/employees/entities/employee.entity';
 import { Task } from 'src/tasks/entities/task.entity';
 
@@ -9,6 +10,6 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || '1234567890',
   database: process.env.DB_NAME || 'to-do-infas',
-  entities: [Employee, Task],
+  entities: [Employee, Task, User],
   synchronize: process.env.NODE_ENV !== 'production',
 };
