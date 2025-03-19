@@ -19,6 +19,8 @@ export interface Employee {
   username: string;
   password: string;
   department: string;
+  finishedTasks?: number;
+  totalTasks?: number;
 }
 export interface AssignFormData {
   name: string;

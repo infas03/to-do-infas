@@ -2,7 +2,7 @@
 import DefaultLayout from "@/layouts/default";
 import { Analytics } from "@/components/analytics";
 
-export default function IndexPage() {
+export default function Admin() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">

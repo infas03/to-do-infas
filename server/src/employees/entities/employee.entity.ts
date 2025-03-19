@@ -21,6 +21,9 @@ export class Employee {
   @Column()
   department: string;
 
+  @Column({ default: 'user' })
+  role: string;
+
   @OneToMany(() => Task, (task) => task.employee)
   tasks: Task[];
 }

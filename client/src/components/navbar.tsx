@@ -10,13 +10,17 @@ import {
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
+import { useLocation } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, LinkedInIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
+import { Button } from "@heroui/button";
 
 export const Navbar = () => {
+  const location = useLocation();
+
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -33,20 +37,25 @@ export const Navbar = () => {
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <Link
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </Link>
-            </NavbarItem>
-          ))}
+          {siteConfig.navItems.map((item) => {
+            const isActive = location.pathname === item.href;
+
+            return (
+              <NavbarItem key={item.href} isActive={isActive}>
+                <Link
+                  className={clsx(linkStyles({ color: "foreground" }), {
+                    "text-blue-500 font-medium": isActive,
+                    "data-[active=true]:text-primary data-[active=true]:font-medium":
+                      !isActive,
+                  })}
+                  color="foreground"
+                  href={item.href}
+                >
+                  {item.label}
+                </Link>
+              </NavbarItem>
+            );
+          })}
         </div>
       </NavbarContent>
 
@@ -62,6 +71,11 @@ export const Navbar = () => {
             <GithubIcon className="text-default-500" />
           </Link>
           <ThemeSwitch />
+        </NavbarItem>
+        <NavbarItem>
+          <Button as={Link} color="primary" href="#" variant="flat">
+            Login
+          </Button>
         </NavbarItem>
       </NavbarContent>
 
@@ -92,6 +106,11 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
           ))}
+          <NavbarItem>
+            <Button as={Link} color="primary" href="#" variant="flat">
+              Login
+            </Button>
+          </NavbarItem>
         </div>
       </NavbarMenu>
     </HeroUINavbar>

@@ -57,13 +57,27 @@ export class EmployeesService {
     const { page, limit } = paginationDto;
 
     const currentPage = page > 0 ? page : 1;
-    const currentLimit = limit > 0 ? limit : 10;
+    const currentLimit = limit > 0 ? limit : 999999999;
     const skip = (currentPage - 1) * currentLimit;
 
     try {
       const [employees, total] = await this.employeeRepository.findAndCount({
+        relations: ['tasks'],
         skip,
         take: currentLimit,
+      });
+
+      const employeesWithTaskCounts = employees.map((employee) => {
+        const totalTasks = employee.tasks.length;
+        const finishedTasks = employee.tasks.filter(
+          (task) => task.isCompleted === true,
+        ).length;
+
+        return {
+          ...employee,
+          totalTasks,
+          finishedTasks,
+        };
       });
 
       const totalPages = Math.ceil(total / currentLimit);
@@ -72,7 +86,7 @@ export class EmployeesService {
         success: true,
         statusCode: HttpStatus.OK,
         message: 'Employees fetched successfully',
-        data: employees,
+        data: employeesWithTaskCounts,
         pagination: {
           total,
           page,

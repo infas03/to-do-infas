@@ -12,7 +12,7 @@ import {
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { useState } from "react";
 
-import { EditIcon, EyeFilledIcon, EyeSlashFilledIcon, LockIcon } from "./icons";
+import { EditIcon, EyeFilledIcon, EyeSlashFilledIcon } from "./icons";
 
 import { departments } from "@/config/staticValue";
 import { EmployeeFormData } from "@/types";
@@ -63,11 +63,13 @@ export const EmployeesAddForm = ({
       }
     } catch (error) {
       if (error instanceof Error) {
+        // eslint-disable-next-line no-console
         console.error("Error:", error.message);
         setError(
           `Error ${mode === "add" ? "creating" : "updating"} employee, try again later!`
         );
       } else {
+        // eslint-disable-next-line no-console
         console.error("Error");
         setError(
           `Error ${mode === "add" ? "creating" : "updating"} employee, try again later!`

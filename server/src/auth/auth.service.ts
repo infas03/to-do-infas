@@ -3,61 +3,67 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { Employee } from 'src/employees/entities/employee.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(Employee)
+    private employeeRepository: Repository<Employee>,
     private jwtService: JwtService,
   ) {}
 
   async register(
     registerDto: RegisterDto,
-  ): Promise<{ message: string; user: Partial<User> }> {
-    const user = this.userRepository.create(registerDto);
-    const savedUser = await this.userRepository.save(user);
+  ): Promise<{ message: string; employee: Partial<Employee> }> {
+    const employee = this.employeeRepository.create(registerDto);
+    const savedEmployer = await this.employeeRepository.save(employee);
 
     return {
       message: 'Registration successful',
-      user: {
-        id: savedUser.id,
-        username: savedUser.username,
+      employee: {
+        id: savedEmployer.id,
+        username: savedEmployer.username,
       },
     };
   }
 
   async login(
     loginDto: LoginDto,
-  ): Promise<{ message: string; user: User; token: string }> {
-    const user = await this.userRepository.findOne({
+  ): Promise<{ message: string; employee: Employee; token: string }> {
+    const employee = await this.employeeRepository.findOne({
       where: { username: loginDto.username },
     });
-    if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
+    if (
+      !employee ||
+      !(await bcrypt.compare(loginDto.password, employee.password))
+    ) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: employee.username, sub: employee.id };
     const token = this.jwtService.sign(payload);
 
     return {
       message: 'Login successful',
-      user,
+      employee: employee,
       token,
     };
   }
 
-  async validateUser(username: string, userId: number): Promise<User | null> {
-    const user = await this.userRepository.findOne({
+  async validateUser(
+    username: string,
+    userId: number,
+  ): Promise<Employee | null> {
+    const employee = await this.employeeRepository.findOne({
       where: { username, id: userId },
     });
 
-    if (!user) {
+    if (!employee) {
       throw new UnauthorizedException('User not found');
     }
 
-    return user;
+    return employee;
   }
 }
