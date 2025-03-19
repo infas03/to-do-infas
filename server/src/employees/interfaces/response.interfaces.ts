@@ -19,3 +19,16 @@ export interface CreateEmployeeResponse {
   message: string;
   data: Employee;
 }
+
+export interface UpdateEmployeeResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: Employee;
+}
+
+export interface DeleteEmployeeResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+}

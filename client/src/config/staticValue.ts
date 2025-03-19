@@ -33,3 +33,9 @@ export const employeesTableColumns = [
     label: "Actions",
   },
 ];
+
+export const priorities = [
+  { key: "low", label: "Low" },
+  { key: "medium", label: "Medium" },
+  { key: "high", label: "High" },
+];

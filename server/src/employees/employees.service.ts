@@ -12,7 +12,9 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PaginationDto } from './dto/pagination.dto';
 import {
   CreateEmployeeResponse,
+  DeleteEmployeeResponse,
   PaginatedResponse,
+  UpdateEmployeeResponse,
 } from './interfaces/response.interfaces';
 
 @Injectable()
@@ -103,16 +105,85 @@ export class EmployeesService {
   async update(
     id: number,
     updateEmployeeDto: UpdateEmployeeDto,
-  ): Promise<Employee> {
-    const employee = await this.findOne(id);
-    this.employeeRepository.merge(employee, updateEmployeeDto);
-    return this.employeeRepository.save(employee);
+  ): Promise<UpdateEmployeeResponse> {
+    try {
+      const employee = await this.employeeRepository.findOne({ where: { id } });
+      if (!employee) {
+        throw new NotFoundException(`Employee with ID ${id} not found`);
+      }
+
+      this.employeeRepository.merge(employee, updateEmployeeDto);
+      const updatedEmployee = await this.employeeRepository.save(employee);
+
+      return {
+        success: true,
+        statusCode: HttpStatus.OK,
+        message: 'Employee updated successfully',
+        data: updatedEmployee,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.NOT_FOUND,
+            message: error.message,
+            error: 'Not Found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: 'Failed to update employee',
+            error: 'Bad Request',
+            details: (error as Error).message,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 
-  async delete(id: number): Promise<void> {
-    const result = await this.employeeRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Employee with ID ${id} not found`);
+  async delete(id: number): Promise<DeleteEmployeeResponse> {
+    try {
+      const employee = await this.employeeRepository.findOne({ where: { id } });
+      if (!employee) {
+        throw new NotFoundException(`Employee with ID ${id} not found`);
+      }
+
+      await this.employeeRepository.delete(id);
+
+      return {
+        success: true,
+        statusCode: HttpStatus.OK,
+        message: 'Employee deleted successfully',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.NOT_FOUND,
+            message: error.message,
+            error: 'Not Found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: 'Failed to delete employee',
+            error: 'Internal Server Error',
+            details: (error as Error).message,
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 }

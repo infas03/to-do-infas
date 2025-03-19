@@ -20,3 +20,9 @@ export interface Employee {
   password: string;
   department: string;
 }
+export interface AssignFormData {
+  name: string;
+  description: string;
+  priority: string;
+  dueDate: string;
+}

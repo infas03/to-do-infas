@@ -12,6 +12,8 @@ import { Pagination } from "@heroui/react";
 
 import { EmployeesAddForm } from "./employeeAddForm";
 import { EmployerTableSkeleton } from "./skeleton/employerTableSkeleton";
+import { AssignTaskForm } from "./assignTaskForm";
+import { DeleteConfirmationForm } from "./deleteConfirmationModal";
 
 import { Employee } from "@/types";
 import { employeesTableColumns } from "@/config/staticValue";
@@ -30,10 +32,10 @@ export const EmployeesTable = () => {
       const response = await api.get("/v1/employees", {
         params: {
           page,
-          limit: 3,
+          limit: 5,
         },
       });
-      console.log("response", response);
+
       setEmployees(response.data.data);
       setTotalPages(response.data.pagination.totalPages);
     } catch (error) {
@@ -57,38 +59,67 @@ export const EmployeesTable = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold mb-4">Employees</h1>
         <EmployeesAddForm
+          mode="add"
           onEmployeeCreated={() => fetchEmployees(currentPage)}
         />
       </div>
-
-      {isLoading ? (
-        <EmployerTableSkeleton />
-      ) : (
-        <>
-          <Table aria-label="Example table with dynamic content">
-            <TableHeader columns={employeesTableColumns}>
-              {(column) => (
-                <TableColumn key={column.key}>{column.label}</TableColumn>
-              )}
-            </TableHeader>
-            <TableBody items={employees}>
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => (
-                    <TableCell>{getKeyValue(item, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <Pagination
-            className="flex justify-end mt-0.5"
-            page={currentPage}
-            total={totalPages}
-            onChange={handlePageChange}
-          />
-        </>
-      )}
+      <div className="flex flex-col items-center">
+        {isLoading ? (
+          <EmployerTableSkeleton />
+        ) : (
+          <>
+            <Table
+              aria-label="Example table with dynamic content"
+              className="max-w-5xl"
+            >
+              <TableHeader columns={employeesTableColumns}>
+                {(column) => (
+                  <TableColumn key={column.key}>{column.label}</TableColumn>
+                )}
+              </TableHeader>
+              <TableBody items={employees}>
+                {(item) => (
+                  <TableRow key={item.id}>
+                    {(columnKey) => (
+                      <TableCell>
+                        {columnKey === "actions" ? (
+                          <div className="flex space-x-2 w-full gap-x-5">
+                            <EmployeesAddForm
+                              employeeId={item.id}
+                              initialData={item}
+                              mode="update"
+                              onEmployeeCreated={() =>
+                                fetchEmployees(currentPage)
+                              }
+                            />
+                            <AssignTaskForm employeeId={item.id!} />
+                            <DeleteConfirmationForm
+                              employeeId={item.id!}
+                              onEmployeeDeleted={() =>
+                                fetchEmployees(currentPage)
+                              }
+                            />
+                          </div>
+                        ) : (
+                          getKeyValue(item, columnKey)
+                        )}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+            <div className="flex justify-end items-end w-full max-w-5xl">
+              <Pagination
+                className="mt-0.5"
+                page={currentPage}
+                total={totalPages}
+                onChange={handlePageChange}
+              />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
