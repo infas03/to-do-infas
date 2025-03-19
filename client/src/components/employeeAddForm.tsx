@@ -10,23 +10,53 @@ import {
   Form,
 } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
+import { useState } from "react";
 
 import { LockIcon } from "./icons";
 
 import { departments } from "@/config/staticValue";
 import { EmployeeFormData } from "@/types";
+import api from "@/services/api";
 
-export const EmployeesAddForm = () => {
+interface EmployeesAddFormProps {
+  onEmployeeCreated: () => void;
+}
+
+export const EmployeesAddForm = ({
+  onEmployeeCreated,
+}: EmployeesAddFormProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    onClose: () => void
+  ) => {
+    setError(null);
     e.preventDefault();
 
     const data = Object.fromEntries(
       new FormData(e.currentTarget)
     ) as unknown as EmployeeFormData;
 
-    console.log("Submitted data:", data);
+    try {
+      const response = await api.post("/v1/employees", data);
+
+      if (response.data.success) {
+        onClose();
+        onEmployeeCreated();
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        // eslint-disable-next-line no-console
+        console.error("Error creating employee: %d", error.message);
+        setError("Error creating employee, try again later!");
+      } else {
+        // eslint-disable-next-line no-console
+        console.error("Error creating employee");
+        setError("Error creating employee, try again later!");
+      }
+    }
   };
 
   return (
@@ -35,7 +65,7 @@ export const EmployeesAddForm = () => {
         Add Employee
       </Button>
       <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
-        <Form className="w-full max-w-xs" onSubmit={onSubmit}>
+        <Form className="w-full" onSubmit={(e) => onSubmit(e, onOpenChange)}>
           <ModalContent>
             {(onClose) => (
               <>
@@ -98,6 +128,7 @@ export const EmployeesAddForm = () => {
                       </AutocompleteItem>
                     )}
                   </Autocomplete>
+                  {error && <p className="text-red-500">{error}</p>}
                 </ModalBody>
                 <ModalFooter>
                   <Button

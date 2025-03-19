@@ -11,3 +11,12 @@ export interface EmployeeFormData {
   password: string;
   department: string;
 }
+
+export interface Employee {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  department: string;
+}

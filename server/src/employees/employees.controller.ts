@@ -1,4 +1,3 @@
-// src/modules/employees/controllers/employees.controller.ts
 import {
   Controller,
   Get,
@@ -9,14 +8,16 @@ import {
   Delete,
   Version,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('employees')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
@@ -28,8 +29,8 @@ export class EmployeesController {
 
   @Get()
   @Version('1')
-  async findAll() {
-    return this.employeesService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    return this.employeesService.findAll(paginationDto);
   }
 
   @Get(':id')
