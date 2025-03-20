@@ -3,7 +3,7 @@ import { EmployeesService } from './employees.service';
 import { EmployeesController } from './employees.controller';
 import { Employee } from './entities/employee.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PasswordService } from 'src/common/password.service';
+import { PasswordService } from '../common/password.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Employee])],

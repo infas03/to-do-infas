@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Employee } from 'src/employees/entities/employee.entity';
-import { Task } from 'src/tasks/entities/task.entity';
+import { Employee } from '../employees/entities/employee.entity';
+import { Task } from '../tasks/entities/task.entity';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import * as dotenv from 'dotenv';
-import { Employee } from 'src/employees/entities/employee.entity';
+import { Employee } from '../employees/entities/employee.entity';
 
 dotenv.config();
 

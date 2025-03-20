@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { Employee } from 'src/employees/entities/employee.entity';
+import { Employee } from '../employees/entities/employee.entity';
 import { LoginResponse } from './interfaces/response.interfaces';
 
 @Injectable()

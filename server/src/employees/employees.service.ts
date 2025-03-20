@@ -16,7 +16,7 @@ import {
   PaginatedResponse,
   UpdateEmployeeResponse,
 } from './interfaces/response.interfaces';
-import { PasswordService } from 'src/common/password.service';
+import { PasswordService } from '../common/password.service';
 
 @Injectable()
 export class EmployeesService {

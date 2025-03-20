@@ -1,4 +1,3 @@
-// src/modules/tasks/services/tasks.service.ts
 import {
   HttpException,
   HttpStatus,
@@ -8,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
-import { Employee } from 'src/employees/entities/employee.entity';
+import { Employee } from '../employees/entities/employee.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import {
