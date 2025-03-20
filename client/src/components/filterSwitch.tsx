@@ -11,7 +11,7 @@ export const FilterSwitch = (props: SwitchProps) => {
     getBaseProps,
     getInputProps,
     getWrapperProps,
-    onValueChange,
+    // onValueChange,
   } = useSwitch(props);
 
   return (
@@ -23,7 +23,7 @@ export const FilterSwitch = (props: SwitchProps) => {
         <div
           {...getWrapperProps()}
           className={slots.wrapper({
-            color: "none",
+            color: "none" as any,
             class: [
               "w-10 h-10",
               "flex items-center justify-center",

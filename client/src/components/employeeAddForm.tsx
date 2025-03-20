@@ -11,7 +11,6 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { useState } from "react";
 
 import { EditIcon, EyeFilledIcon, EyeSlashFilledIcon } from "./icons";

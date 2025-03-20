@@ -13,8 +13,5 @@ export const databaseConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD || 'default_password',
   database: process.env.DB_NAME || 'to-do-infas',
   entities: [Employee, Task],
-  synchronize: true,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  synchronize: process.env.NODE_ENV !== 'production',
 };
