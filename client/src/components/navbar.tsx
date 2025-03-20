@@ -22,7 +22,7 @@ import { useAuth } from "@/context/authContext";
 export const Navbar = () => {
   const location = useLocation();
 
-  const { logout, role, userDetails } = useAuth();
+  const { logout, role, userDetails, isLoggedIn } = useAuth();
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -83,11 +83,13 @@ export const Navbar = () => {
           </span>
           <span className="text-gray-400">{userDetails?.department}</span>
         </NavbarItem>
-        <NavbarItem>
-          <Button color="danger" href="#" variant="flat" onPress={logout}>
-            Logout
-          </Button>
-        </NavbarItem>
+        {isLoggedIn && (
+          <NavbarItem>
+            <Button color="danger" href="#" variant="flat" onPress={logout}>
+              Logout
+            </Button>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
