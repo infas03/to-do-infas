@@ -1,1 +1,1 @@
-{"version":3,"file":"create-task.dto.js","sourceRoot":"","sources":["../../../src/tasks/dto/create-task.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,aAAa;CAMzB;AAND,sCAMC"}
+{"version":3,"file":"create-task.dto.js","sourceRoot":"","sources":["../../../src/tasks/dto/create-task.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,aAAa;IACxB,IAAI,CAAS;IACb,WAAW,CAAS;IACpB,QAAQ,CAAS;IACjB,OAAO,CAAO;IACd,UAAU,CAAS;CACpB;AAND,sCAMC"}

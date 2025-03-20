@@ -19,6 +19,8 @@ const typeorm_2 = require("typeorm");
 const task_entity_1 = require("./entities/task.entity");
 const employee_entity_1 = require("../employees/entities/employee.entity");
 let TasksService = class TasksService {
+    taskRepository;
+    employeeRepository;
     constructor(taskRepository, employeeRepository) {
         this.taskRepository = taskRepository;
         this.employeeRepository = employeeRepository;

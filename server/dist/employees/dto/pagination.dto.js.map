@@ -1,1 +1,1 @@
-{"version":3,"file":"pagination.dto.js","sourceRoot":"","sources":["../../../src/employees/dto/pagination.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,aAAa;CAGzB;AAHD,sCAGC"}
+{"version":3,"file":"pagination.dto.js","sourceRoot":"","sources":["../../../src/employees/dto/pagination.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,aAAa;IACxB,IAAI,CAAS;IACb,KAAK,CAAS;CACf;AAHD,sCAGC"}
