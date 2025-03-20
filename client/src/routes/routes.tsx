@@ -9,9 +9,12 @@ import Employees from "@/pages/employees";
 import Login from "@/pages/login";
 import User from "@/pages/user";
 
-
 const AppRoutes = () => {
-  const { isLoggedIn, role } = useAuth();
+  const { isLoggedIn, role, resolved } = useAuth();
+
+  if (!resolved) {
+    return null;
+  }
 
   return (
     <Routes>

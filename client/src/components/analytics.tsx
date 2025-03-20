@@ -32,7 +32,7 @@ export const Analytics = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Task Completion Analytics</h1>
-      <div className="mt-10 flex flex-wrap gap-4">
+      <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
           <AnalyticCardSkeleton />
         ) : (

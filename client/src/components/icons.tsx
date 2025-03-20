@@ -411,3 +411,79 @@ export const EyeFilledIcon: React.FC<IconSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const UserIcon: React.FC<IconSvgProps> = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="1em"
+      {...props}
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+};
+
+export const PasswordIcon: React.FC<IconSvgProps> = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="1em"
+      {...props}
+    >
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+};
+
+export const UpArrowIcon: React.FC<IconSvgProps> = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 24 24"
+      width="1em"
+      {...props}
+    >
+      <path d="M12 4l-8 8h6v8h4v-8h6l-8-8z" fill="currentColor" />
+    </svg>
+  );
+};
+
+export const DownArrowIcon: React.FC<IconSvgProps> = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 24 24"
+      width="1em"
+      {...props}
+    >
+      <path d="M12 20l8-8h-6V4h-4v8H4l8 8z" fill="currentColor" />
+    </svg>
+  );
+};

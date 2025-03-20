@@ -39,3 +39,35 @@ export const priorities = [
   { key: "medium", label: "Medium" },
   { key: "high", label: "High" },
 ];
+
+export const userTaskTableColumns = [
+  {
+    key: "name",
+    label: "Task",
+  },
+  {
+    key: "priority",
+    label: "Priority",
+  },
+  {
+    key: "dueDate",
+    label: "Due Date",
+  },
+  {
+    key: "status",
+    label: "Status",
+  },
+];
+
+export const taskFilter = [
+  {
+    label: "Due Date",
+    value: "dueDate",
+    key: "dueDate",
+  },
+  {
+    label: "Priority",
+    value: "priority",
+    key: "priority",
+  },
+]

@@ -16,26 +16,38 @@ import {
   PaginatedResponse,
   UpdateEmployeeResponse,
 } from './interfaces/response.interfaces';
+import { PasswordService } from 'src/common/password.service';
 
 @Injectable()
 export class EmployeesService {
   constructor(
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
+    private readonly passwordService: PasswordService,
   ) {}
 
   async create(
     createEmployeeDto: CreateEmployeeDto,
   ): Promise<CreateEmployeeResponse> {
     try {
-      const employee = this.employeeRepository.create(createEmployeeDto);
+      const hashedPassword = await this.passwordService.hashPassword(
+        createEmployeeDto.password,
+      );
+
+      const employee = this.employeeRepository.create({
+        ...createEmployeeDto,
+        password: hashedPassword,
+      });
       const savedEmployee = await this.employeeRepository.save(employee);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...savedEmployeeWithoutPassword } = savedEmployee;
 
       return {
         success: true,
         statusCode: HttpStatus.CREATED,
         message: 'Employee created successfully',
-        data: savedEmployee,
+        data: savedEmployeeWithoutPassword,
       };
     } catch (error) {
       throw new HttpException(

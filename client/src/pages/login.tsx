@@ -1,52 +1,129 @@
-import React from "react";
+import { useState } from "react";
 import { Form, Input, Button } from "@heroui/react";
 
+import {
+  EyeFilledIcon,
+  EyeSlashFilledIcon,
+  Logo,
+  PasswordIcon,
+  UserIcon,
+} from "@/components/icons";
+import api from "@/services/api";
+import { LoginFormData } from "@/types";
+import { useAuth } from "@/context/authContext";
+
 export default function Login() {
-  const [action, setAction] = React.useState<string | null>(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+
+  const toggleVisibility = () => setIsPasswordVisible(!isPasswordVisible);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const data = Object.fromEntries(
+      new FormData(e.currentTarget)
+    ) as unknown as LoginFormData;
+
+    try {
+      const response = await api.post("/v1/auth/login", data);
+
+      if (response.data.success) {
+        const { token, data } = response.data;
+
+        login(token, data.role, data);
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError("Invalid credentials.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <Form
-      className="w-full max-w-xs flex flex-col gap-4"
-      onReset={() => setAction("reset")}
-      onSubmit={(e) => {
-        e.preventDefault();
-        let data = Object.fromEntries(new FormData(e.currentTarget));
-
-        setAction(`submit ${JSON.stringify(data)}`);
-      }}
-    >
-      <Input
-        isRequired
-        errorMessage="Please enter a valid username"
-        label="Username"
-        labelPlacement="outside"
-        name="username"
-        placeholder="Enter your username"
-        type="text"
-      />
-
-      <Input
-        isRequired
-        errorMessage="Please enter a valid email"
-        label="Email"
-        labelPlacement="outside"
-        name="email"
-        placeholder="Enter your email"
-        type="email"
-      />
-      <div className="flex gap-2">
-        <Button color="primary" type="submit">
-          Submit
-        </Button>
-        <Button type="reset" variant="flat">
-          Reset
-        </Button>
-      </div>
-      {action && (
-        <div className="text-small text-default-500">
-          Action: <code>{action}</code>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Form
+        className="w-full max-w-lg flex flex-col items-center gap-4 bg-white p-10 rounded-xl shadow-md"
+        onSubmit={(e) => handleLogin(e)}
+      >
+        <div className="flex flex-col items-center mb-5">
+          <Logo size={100} />
+          <h1 className="text-2xl font-bold text-center -mt-4">
+            Task Management System
+          </h1>
+          <p className="text-base font-medium text-center text-gray-400">
+            Sign in to access your dashboard
+          </p>
         </div>
-      )}
-    </Form>
+        <Input
+          isRequired
+          errorMessage="Please enter a valid username"
+          label="Username"
+          name="username"
+          placeholder="Enter username"
+          startContent={
+            <UserIcon className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+          }
+          type="text"
+          variant="bordered"
+        />
+        <Input
+          isRequired
+          endContent={
+            <button
+              aria-label="toggle password visibility"
+              className="focus:outline-none"
+              type="button"
+              onClick={toggleVisibility}
+            >
+              {isPasswordVisible ? (
+                <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+              ) : (
+                <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+              )}
+            </button>
+          }
+          errorMessage="Please enter a valid password"
+          label="Password"
+          name="password"
+          placeholder="Enter your password"
+          startContent={
+            <PasswordIcon className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+          }
+          type={isPasswordVisible ? "text" : "password"}
+          variant="bordered"
+        />
+        {error && (
+          <div className="w-full text-center text-sm text-red-500">{error}</div>
+        )}
+        <div className="flex gap-2 w-full">
+          <Button
+            className="w-full h-12 font-medium text-base"
+            color="primary"
+            disabled={isLoading}
+            isLoading={isLoading}
+            type="submit"
+          >
+            {isLoading ? "" : "Sign in"}
+          </Button>
+        </div>
+        <div className="text-sm text-gray-400 text-center">
+          <p className="text-gray-500">Demo Account</p>
+          <p>admin / password</p>
+          <p>infas / password</p>
+          <p>andy / password</p>
+        </div>
+      </Form>
+    </div>
   );
 }

@@ -14,7 +14,9 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import {
   CreateTaskResponse,
   FindAllTasksResponse,
+  UpdateTaskResponse,
 } from './interfaces/response.interfaces';
+import { FindTasksByUserIdDto } from './dto/find-task-by-user-id.dto';
 
 @Injectable()
 export class TasksService {
@@ -75,15 +77,46 @@ export class TasksService {
     }
   }
 
-  async findAll(): Promise<FindAllTasksResponse<Task>> {
+  async findAllByUserId(
+    employeeId: number,
+    query: FindTasksByUserIdDto,
+  ): Promise<FindAllTasksResponse<Task>> {
     try {
-      const tasks = await this.taskRepository.find({ relations: ['employee'] });
+      const filter: {
+        employee: { id: number };
+        priority?: string;
+        dueDate?: Date;
+      } = {
+        employee: { id: employeeId },
+      };
+
+      const order: { priority?: 'ASC' | 'DESC'; dueDate?: 'ASC' | 'DESC' } = {};
+
+      if (query.mainFilter === 'priority') {
+        order.priority =
+          (query.sortOrder?.toUpperCase() as 'ASC' | 'DESC') || 'ASC';
+      } else if (query.mainFilter === 'dueDate') {
+        order.dueDate =
+          (query.sortOrder?.toUpperCase() as 'ASC' | 'DESC') || 'ASC';
+      }
+
+      const tasks = await this.taskRepository.find({
+        where: filter,
+        order: order,
+      });
+
+      const totalTasks = tasks.length;
+      const finishedTasks = tasks.filter((task) => task.isCompleted).length;
 
       return {
         success: true,
         statusCode: HttpStatus.OK,
         message: 'Tasks retrieved successfully',
-        data: tasks,
+        data: {
+          tasks,
+          totalTasks,
+          finishedTasks,
+        },
       };
     } catch (error) {
       throw new HttpException(
@@ -110,10 +143,50 @@ export class TasksService {
     return task;
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const task = await this.findOne(id);
-    this.taskRepository.merge(task, updateTaskDto);
-    return this.taskRepository.save(task);
+  async update(
+    id: number,
+    updateTaskDto: UpdateTaskDto,
+  ): Promise<UpdateTaskResponse> {
+    try {
+      const task = await this.taskRepository.findOne({ where: { id } });
+      if (!task) {
+        throw new NotFoundException(`Task with ID ${id} not found`);
+      }
+
+      this.taskRepository.merge(task, updateTaskDto);
+
+      const updatedTask = await this.taskRepository.save(task);
+
+      return {
+        success: true,
+        statusCode: HttpStatus.OK,
+        message: 'Task updated successfully',
+        data: updatedTask,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.NOT_FOUND,
+            message: error.message,
+            error: 'Not Found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw new HttpException(
+          {
+            success: false,
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: 'Failed to update task',
+            error: 'Bad Request',
+            details: (error as Error).message,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 
   async delete(id: number): Promise<void> {

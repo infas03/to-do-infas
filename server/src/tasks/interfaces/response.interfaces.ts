@@ -13,7 +13,18 @@ export interface FindAllTasksResponse<T> {
   success: boolean;
   statusCode: number;
   message: string;
-  data?: T[];
+  data?: {
+    tasks: T[];
+    totalTasks: number;
+    finishedTasks: number;
+  };
   error?: string;
   details?: string;
+}
+
+export interface UpdateTaskResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: Task;
 }

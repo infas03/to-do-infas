@@ -28,3 +28,17 @@ export interface AssignFormData {
   priority: string;
   dueDate: string;
 }
+
+export interface LoginFormData {
+  username: string;
+  password: string;
+}
+
+export interface Task {
+  id?: number;
+  name: string;
+  description: string;
+  priority: string;
+  dueDate: string;
+  isCompleted: boolean;
+}

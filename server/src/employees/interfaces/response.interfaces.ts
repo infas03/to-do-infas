@@ -17,7 +17,7 @@ export interface CreateEmployeeResponse {
   success: boolean;
   statusCode: number;
   message: string;
-  data: Employee;
+  data: Omit<Employee, 'password'>;
 }
 
 export interface UpdateEmployeeResponse {

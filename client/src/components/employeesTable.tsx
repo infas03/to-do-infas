@@ -36,8 +36,10 @@ export const EmployeesTable = () => {
         },
       });
 
-      setEmployees(response.data.data);
-      setTotalPages(response.data.pagination.totalPages);
+      if (response?.data.success) {
+        setEmployees(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error fetching employees:", error);

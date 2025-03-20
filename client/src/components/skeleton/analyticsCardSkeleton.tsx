@@ -2,9 +2,9 @@ import { Card, Skeleton } from "@heroui/react";
 
 export const AnalyticCardSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <>
       {[...Array(6)].map((_, index) => (
-        <Card key={index} className="w-[200px] space-y-5 p-4" radius="lg">
+        <Card key={index} className="min-w-[250px] space-y-5 p-4" radius="lg">
           <Skeleton className="rounded-lg">
             <div className="h-24 rounded-lg bg-default-300" />
           </Skeleton>
@@ -21,6 +21,6 @@ export const AnalyticCardSkeleton = () => {
           </div>
         </Card>
       ))}
-    </div>
+    </>
   );
 };

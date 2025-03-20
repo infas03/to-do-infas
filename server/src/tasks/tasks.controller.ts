@@ -10,11 +10,13 @@ import {
   Patch,
   UseGuards,
   Version,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { FindTasksByUserIdDto } from './dto/find-task-by-user-id.dto';
 
 @Controller('tasks')
 // @UseGuards(JwtAuthGuard)
@@ -27,10 +29,13 @@ export class TasksController {
     return this.tasksService.create(createTaskDto);
   }
 
-  @Get()
+  @Get(':employeeId')
   @Version('1')
-  async findAll() {
-    return this.tasksService.findAll();
+  async findAllByEmployeeId(
+    @Param('employeeId') employeeId: number,
+    @Query() query: FindTasksByUserIdDto,
+  ) {
+    return this.tasksService.findAllByUserId(employeeId, query);
   }
 
   @Get(':id')
