@@ -9,17 +9,10 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
         origin: '*',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         allowedHeaders: 'Content-Type, Authorization',
         preflightContinue: false,
         optionsSuccessStatus: 204,
-    });
-    app.use((req, res, next) => {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        res.status(204).end();
-        next();
     });
     app.setGlobalPrefix('api');
     app.enableVersioning({
