@@ -13,13 +13,6 @@ exports.Task = void 0;
 const typeorm_1 = require("typeorm");
 const employee_entity_1 = require("../../employees/entities/employee.entity");
 let Task = class Task {
-    id;
-    name;
-    description;
-    priority;
-    dueDate;
-    isCompleted;
-    employee;
 };
 exports.Task = Task;
 __decorate([

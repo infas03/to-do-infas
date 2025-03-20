@@ -20,7 +20,6 @@ const update_task_dto_1 = require("./dto/update-task.dto");
 const find_task_by_user_id_dto_1 = require("./dto/find-task-by-user-id.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let TasksController = class TasksController {
-    tasksService;
     constructor(tasksService) {
         this.tasksService = tasksService;
     }

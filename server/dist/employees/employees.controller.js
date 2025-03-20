@@ -20,7 +20,6 @@ const update_employee_dto_1 = require("./dto/update-employee.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const pagination_dto_1 = require("./dto/pagination.dto");
 let EmployeesController = class EmployeesController {
-    employeesService;
     constructor(employeesService) {
         this.employeesService = employeesService;
     }

@@ -19,8 +19,6 @@ const typeorm_2 = require("typeorm");
 const employee_entity_1 = require("./entities/employee.entity");
 const password_service_1 = require("../common/password.service");
 let EmployeesService = class EmployeesService {
-    employeeRepository;
-    passwordService;
     constructor(employeeRepository, passwordService) {
         this.employeeRepository = employeeRepository;
         this.passwordService = passwordService;
