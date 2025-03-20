@@ -1,4 +1,3 @@
-// src/modules/tasks/entities/task.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Employee } from '../../employees/entities/employee.entity';
 
