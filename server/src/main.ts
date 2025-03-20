@@ -10,7 +10,8 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [process.env.FRONTEND_URL, 'https://to-do-infas.vercel.app'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   });
 

@@ -9,7 +9,8 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
         origin: [process.env.FRONTEND_URL, 'https://to-do-infas.vercel.app'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        allowedHeaders: 'Content-Type, Authorization',
         credentials: true,
     });
     app.setGlobalPrefix('api');
