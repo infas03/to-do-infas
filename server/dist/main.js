@@ -15,12 +15,10 @@ async function bootstrap() {
         optionsSuccessStatus: 204,
     });
     app.use((req, res, next) => {
-        if (req.method === 'OPTIONS') {
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            return res.status(204).end();
-        }
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.status(204).end();
         next();
     });
     app.setGlobalPrefix('api');
