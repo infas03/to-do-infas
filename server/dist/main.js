@@ -8,10 +8,10 @@ dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
-        origin: 'https://to-do-infas.vercel.app',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        credentials: true,
-        allowedHeaders: 'Content-Type, Accept',
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
     });
     app.setGlobalPrefix('api');
     app.enableVersioning({
