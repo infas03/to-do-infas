@@ -8,6 +8,8 @@ import {
   useDisclosure,
   Input,
   Form,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { useState } from "react";
@@ -132,8 +134,6 @@ export const EmployeesAddForm = ({
                     variant="bordered"
                   />
                   <Input
-                    isRequired
-                    defaultValue={initialData?.password}
                     endContent={
                       <button
                         aria-label="toggle password visibility"
@@ -142,35 +142,36 @@ export const EmployeesAddForm = ({
                         onClick={toggleVisibility}
                       >
                         {isPasswordVisible ? (
-                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
                           <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                        ) : (
+                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
                         )}
                       </button>
                     }
                     errorMessage="Please enter a valid password"
+                    isRequired={mode === "add"}
                     label="Password"
                     name="password"
                     placeholder="Enter your password"
                     type={isPasswordVisible ? "text" : "password"}
                     variant="bordered"
                   />
-                  <Autocomplete
+                  <Select
                     isRequired
                     className="w-full"
-                    defaultInputValue={initialData?.department}
-                    defaultItems={departments}
+                    defaultSelectedKeys={
+                      initialData?.department ? [initialData.department] : []
+                    }
+                    items={departments}
                     label="Department"
                     name="department"
                     placeholder="Select department"
                     variant="bordered"
                   >
                     {(item) => (
-                      <AutocompleteItem key={item.key}>
-                        {item.label}
-                      </AutocompleteItem>
+                      <SelectItem key={item.key}>{item.label}</SelectItem>
                     )}
-                  </Autocomplete>
+                  </Select>
                   {error && <p className="text-red-500">{error}</p>}
                 </ModalBody>
                 <ModalFooter>

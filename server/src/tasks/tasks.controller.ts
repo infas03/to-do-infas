@@ -1,4 +1,3 @@
-// src/modules/tasks/controllers/tasks.controller.ts
 import {
   Controller,
   Get,
@@ -19,7 +18,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { FindTasksByUserIdDto } from './dto/find-task-by-user-id.dto';
 
 @Controller('tasks')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 

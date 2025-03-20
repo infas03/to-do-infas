@@ -1,13 +1,18 @@
 export const departments = [
   {
     label: "Engineering",
-    value: "engineering",
-    key: "engineering",
+    value: "Engineering",
+    key: "Engineering",
   },
   {
     label: "IT",
-    value: "it",
-    key: "it",
+    value: "IT",
+    key: "IT",
+  },
+  {
+    label: "HR",
+    value: "HR",
+    key: "HR",
   },
 ];
 

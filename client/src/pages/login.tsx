@@ -51,9 +51,9 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-5 md:p-0">
       <Form
-        className="w-full max-w-lg flex flex-col items-center gap-4 bg-white p-10 rounded-xl shadow-md"
+        className="w-full max-w-lg flex flex-col items-center gap-4 bg-white p-7 md:p-10 rounded-xl shadow-md"
         onSubmit={(e) => handleLogin(e)}
       >
         <div className="flex flex-col items-center mb-5">

@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -74,6 +74,7 @@ export class EmployeesService {
 
     try {
       const [employees, total] = await this.employeeRepository.findAndCount({
+        where: { role: Not('admin') },
         relations: ['tasks'],
         skip,
         take: currentLimit,
@@ -138,8 +139,17 @@ export class EmployeesService {
         throw new NotFoundException(`Employee with ID ${id} not found`);
       }
 
-      this.employeeRepository.merge(employee, updateEmployeeDto);
-      const updatedEmployee = await this.employeeRepository.save(employee);
+      const hashedPassword = updateEmployeeDto.password
+        ? await this.passwordService.hashPassword(updateEmployeeDto.password)
+        : employee.password;
+
+      const mergedEmployee = this.employeeRepository.merge(employee, {
+        ...updateEmployeeDto,
+        password: hashedPassword,
+      });
+
+      const updatedEmployee =
+        await this.employeeRepository.save(mergedEmployee);
 
       return {
         success: true,

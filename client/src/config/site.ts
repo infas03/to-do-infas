@@ -13,20 +13,6 @@ export const siteConfig = {
       href: "/employees",
     },
   ],
-  navMenuItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Employees",
-      href: "/employees",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
-  ],
   links: {
     github: "https://github.com/infas03/to-do-infas",
     linkedin: "https://www.linkedin.com/in/hminfas",

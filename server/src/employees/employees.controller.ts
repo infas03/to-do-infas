@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('employees')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 

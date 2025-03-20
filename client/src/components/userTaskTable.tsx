@@ -189,8 +189,8 @@ export const UserTaskTable = () => {
                       {columnKey === "status" && (
                         <div className="">
                           <Checkbox
-                            checked={item?.isCompleted}
                             color="success"
+                            defaultSelected={item?.isCompleted}
                             onChange={() => {
                               if (item.id !== undefined) {
                                 handleCheckboxChange(
