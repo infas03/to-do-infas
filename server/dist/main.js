@@ -14,6 +14,15 @@ async function bootstrap() {
         preflightContinue: false,
         optionsSuccessStatus: 204,
     });
+    app.use((req, res, next) => {
+        if (req.method === 'OPTIONS') {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return res.status(204).end();
+        }
+        next();
+    });
     app.setGlobalPrefix('api');
     app.enableVersioning({
         type: common_1.VersioningType.URI,
