@@ -13,6 +13,9 @@ exports.databaseConfig = {
     password: process.env.DB_PASSWORD || 'default_password',
     database: process.env.DB_NAME || 'to-do-infas',
     entities: [employee_entity_1.Employee, task_entity_1.Task],
-    synchronize: process.env.NODE_ENV !== 'production',
+    synchronize: true,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 };
 //# sourceMappingURL=database.config.js.map
