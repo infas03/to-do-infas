@@ -12,6 +12,7 @@ async function bootstrap() {
     origin: 'https://to-do-infas.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: 'Content-Type, Accept',
   });
 
   app.setGlobalPrefix('api');
