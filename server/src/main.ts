@@ -8,6 +8,11 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  console.log(
+    'Frontend URL:',
+    process.env.FRONTEND_URL || 'https://to-do-infas.vercel.app',
+  );
+
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'https://to-do-infas.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

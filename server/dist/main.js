@@ -7,8 +7,9 @@ const common_1 = require("@nestjs/common");
 dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    console.log('Frontend URL:', process.env.FRONTEND_URL || 'https://to-do-infas.vercel.app');
     app.enableCors({
-        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        origin: process.env.FRONTEND_URL || 'https://to-do-infas.vercel.app',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
     });
