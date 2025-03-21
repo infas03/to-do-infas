@@ -7,13 +7,7 @@ const common_1 = require("@nestjs/common");
 dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.enableCors({
-        origin: '*',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        allowedHeaders: 'Content-Type, Authorization',
-        preflightContinue: false,
-        optionsSuccessStatus: 204,
-    });
+    app.enableCors();
     app.setGlobalPrefix('api');
     app.enableVersioning({
         type: common_1.VersioningType.URI,

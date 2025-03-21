@@ -10,13 +10,7 @@ async function bootstrap() {
 
   // const allowedOrigin = 'https://to-do-infas.vercel.app';
 
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  });
+  app.enableCors();
 
   app.setGlobalPrefix('api');
 
