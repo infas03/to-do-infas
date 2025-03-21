@@ -169,7 +169,7 @@ export const UserTaskTable = () => {
                           </Chip>
                         )}
                         {columnKey === "name" && (
-                          <div className="">
+                          <div className="max-w-[450px]">
                             <div className="text-sm">{item?.name}</div>
                             <div className="text-xs">{item?.description}</div>
                           </div>
