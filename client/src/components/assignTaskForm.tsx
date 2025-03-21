@@ -43,6 +43,8 @@ export const AssignTaskForm = ({ employeeId }: AssignTaskFormProps) => {
       employeeId,
     };
 
+    console.log("taskData: ", taskData);
+
     try {
       const response = await api.post("/v1/tasks", taskData);
 

@@ -67,7 +67,9 @@ export const EmployeesTable = () => {
       </div>
       <div className="flex flex-col items-center">
         {isLoading ? (
-          <EmployerTableSkeleton />
+          <div className="w-full">
+            <EmployerTableSkeleton />
+          </div>
         ) : (
           <>
             <Table

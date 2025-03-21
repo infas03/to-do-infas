@@ -16,11 +16,13 @@ import { Task } from "@/types";
 import api from "@/services/api";
 import { taskFilter, userTaskTableColumns } from "@/config/staticValue";
 import { useAuth } from "@/context/authContext";
+import { EmployerTableSkeleton } from "./skeleton/employerTableSkeleton";
 
 export const UserTaskTable = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [totalTasks, setTotalTasks] = useState(0);
   const [finishedTasks, setFinishedTasks] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [mainFilter, setMainFilter] = useState<string | undefined>("dueDate");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -28,6 +30,8 @@ export const UserTaskTable = () => {
   const { userDetails } = useAuth();
 
   const fetchTasks = async () => {
+    setIsLoading(true);
+
     try {
       const queryParams = new URLSearchParams();
 
@@ -39,7 +43,7 @@ export const UserTaskTable = () => {
       }
 
       const response = await api.get(
-        `/v1/tasks/${userDetails.id}?${queryParams.toString()}`,
+        `/v1/tasks/${userDetails.id}?${queryParams.toString()}`
       );
 
       if (response?.data.success) {
@@ -50,6 +54,8 @@ export const UserTaskTable = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error fetching tasks:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -72,7 +78,7 @@ export const UserTaskTable = () => {
 
   const handleCheckboxChange = async (
     taskId: number,
-    currentStatus: boolean,
+    currentStatus: boolean
   ) => {
     try {
       const updatedStatus = !currentStatus;
@@ -127,97 +133,103 @@ export const UserTaskTable = () => {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <>
-          <Table
-            aria-label="Example table with dynamic content"
-            className="max-w-5xl"
-          >
-            <TableHeader columns={userTaskTableColumns}>
-              {(column) => (
-                <TableColumn key={column.key}>{column.label}</TableColumn>
-              )}
-            </TableHeader>
-            <TableBody items={tasks}>
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => (
-                    <TableCell>
-                      {columnKey === "priority" && (
-                        <Chip
-                          color={
-                            item?.priority === "Low"
-                              ? "default"
-                              : item?.priority === "Medium"
-                                ? "warning"
-                                : item?.priority === "High"
-                                  ? "danger"
-                                  : "primary"
-                          }
-                        >
-                          {item?.priority}
-                        </Chip>
-                      )}
-                      {columnKey === "name" && (
-                        <div className="">
-                          <div className="text-sm">{item?.name}</div>
-                          <div className="text-xs">{item?.description}</div>
-                        </div>
-                      )}
-                      {columnKey === "dueDate" && (
-                        <Alert
-                          className={`border-transparent text-xs ${
-                            new Date(item?.dueDate) < new Date()
-                              ? "text-red-500"
-                              : new Date(item?.dueDate).toDateString() ===
-                                  new Date().toDateString()
-                                ? "text-black"
-                                : "text-blue-500"
-                          } bg-transparent`}
-                          color="default"
-                          hideIcon={new Date(item?.dueDate) >= new Date()}
-                          title={new Date(item?.dueDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            },
-                          )}
-                          variant="bordered"
-                        />
-                      )}
-                      {columnKey === "status" && (
-                        <div className="">
-                          <Checkbox
-                            color="success"
-                            defaultSelected={item?.isCompleted}
-                            onChange={() => {
-                              if (item.id !== undefined) {
-                                handleCheckboxChange(
-                                  item.id,
-                                  item?.isCompleted,
-                                );
-                              }
-                            }}
+        {isLoading ? (
+          <div className="w-full">
+            <EmployerTableSkeleton />
+          </div>
+        ) : (
+          <>
+            <Table
+              aria-label="Example table with dynamic content"
+              className="max-w-5xl"
+            >
+              <TableHeader columns={userTaskTableColumns}>
+                {(column) => (
+                  <TableColumn key={column.key}>{column.label}</TableColumn>
+                )}
+              </TableHeader>
+              <TableBody items={tasks}>
+                {(item) => (
+                  <TableRow key={item.id}>
+                    {(columnKey) => (
+                      <TableCell>
+                        {columnKey === "priority" && (
+                          <Chip
+                            color={
+                              item?.priority === "Low"
+                                ? "default"
+                                : item?.priority === "Medium"
+                                  ? "warning"
+                                  : item?.priority === "High"
+                                    ? "danger"
+                                    : "primary"
+                            }
                           >
-                            {item?.isCompleted
-                              ? "Completed"
-                              : "Mark as completed"}
-                          </Checkbox>
-                        </div>
-                      )}
-                      {columnKey !== "name" &&
-                        columnKey !== "status" &&
-                        columnKey !== "dueDate" &&
-                        columnKey !== "priority" &&
-                        getKeyValue(item, columnKey)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </>
+                            {item?.priority}
+                          </Chip>
+                        )}
+                        {columnKey === "name" && (
+                          <div className="">
+                            <div className="text-sm">{item?.name}</div>
+                            <div className="text-xs">{item?.description}</div>
+                          </div>
+                        )}
+                        {columnKey === "dueDate" && (
+                          <Alert
+                            className={`border-transparent text-xs ${
+                              new Date(item?.dueDate) < new Date()
+                                ? "text-red-500"
+                                : new Date(item?.dueDate).toDateString() ===
+                                    new Date().toDateString()
+                                  ? "text-black"
+                                  : "text-blue-500"
+                            } bg-transparent`}
+                            color="default"
+                            hideIcon={new Date(item?.dueDate) >= new Date()}
+                            title={new Date(item?.dueDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                            variant="bordered"
+                          />
+                        )}
+                        {columnKey === "status" && (
+                          <div className="">
+                            <Checkbox
+                              color="success"
+                              defaultSelected={item?.isCompleted}
+                              onChange={() => {
+                                if (item.id !== undefined) {
+                                  handleCheckboxChange(
+                                    item.id,
+                                    item?.isCompleted
+                                  );
+                                }
+                              }}
+                            >
+                              {item?.isCompleted
+                                ? "Completed"
+                                : "Mark as completed"}
+                            </Checkbox>
+                          </div>
+                        )}
+                        {columnKey !== "name" &&
+                          columnKey !== "status" &&
+                          columnKey !== "dueDate" &&
+                          columnKey !== "priority" &&
+                          getKeyValue(item, columnKey)}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </>
+        )}
       </div>
     </div>
   );

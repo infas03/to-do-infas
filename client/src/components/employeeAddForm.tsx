@@ -49,6 +49,8 @@ export const EmployeesAddForm = ({
       new FormData(e.currentTarget),
     ) as unknown as EmployeeFormData;
 
+    console.log("Form Data:", data);
+
     try {
       let response;
 
