@@ -8,9 +8,12 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // const allowedOrigin = 'https://to-do-infas.vercel.app';
-
-  app.enableCors();
+  app.enableCors({
+    origin: ['https://to-do-infas.vercel.app', 'http://localhost:5173'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+  });
 
   app.setGlobalPrefix('api');
 
@@ -21,7 +24,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on ${port}`);
 }
 
 bootstrap().catch((err) => {

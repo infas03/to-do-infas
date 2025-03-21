@@ -7,14 +7,19 @@ const common_1 = require("@nestjs/common");
 dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.enableCors();
+    app.enableCors({
+        origin: ['https://to-do-infas.vercel.app', 'http://localhost:5173'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        allowedHeaders: 'Content-Type, Authorization',
+        credentials: true,
+    });
     app.setGlobalPrefix('api');
     app.enableVersioning({
         type: common_1.VersioningType.URI,
     });
     const port = process.env.PORT || 3000;
     await app.listen(port);
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on ${port}`);
 }
 bootstrap().catch((err) => {
     console.error('Error during bootstrap:', err);
